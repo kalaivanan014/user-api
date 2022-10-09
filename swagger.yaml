@@ -1,0 +1,160 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080/user
+  description: Generated server url
+paths:
+  /save:
+    post:
+      tags:
+      - user-controller
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+  /location:
+    post:
+      tags:
+      - user-controller
+      operationId: saveCurrentLocation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLocationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /location/recent/{userId}:
+    get:
+      tags:
+      - user-controller
+      operationId: getRecentLocations
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserRecentLocationsResponse'
+  /location/latest/{userId}:
+    get:
+      tags:
+      - user-controller
+      operationId: getLatestLocation
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserLatestLocationResponse'
+components:
+  schemas:
+    UserRequest:
+      required:
+      - firstName
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+    UserResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+        currentTimeStamp:
+          type: string
+          format: date-time
+        emailId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+    Location:
+      type: object
+      properties:
+        longitude:
+          type: string
+        latitude:
+          type: string
+    UserLocationRequest:
+      required:
+      - location
+      - userId
+      type: object
+      properties:
+        userId:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+        location:
+          $ref: '#/components/schemas/Location'
+    Locations:
+      type: object
+      properties:
+        createdOn:
+          type: string
+          format: date-time
+        location:
+          $ref: '#/components/schemas/Location'
+    UserRecentLocationsResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Locations'
+    UserLatestLocationResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+        emailId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
