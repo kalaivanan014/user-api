@@ -37,7 +37,7 @@ retrieve user recent location based on time.
 
 
 
-For further details of teh API kindly refer teh swagger,yaml from root directory 
+For further details of the API kindly refer the swagger.yaml from root directory 
 ```
 ## Run Locally
 
